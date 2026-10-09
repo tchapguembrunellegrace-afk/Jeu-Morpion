@@ -3,27 +3,35 @@
 PROJET : JEU MORPION
 Matière : Programmation structurée
 Nom du projet : Développement du jeu Morpion
-Langage de programmation : À préciser
+Langage de programmation : langage C
 Année académique : 2026-2027
+
 1. Présentation du projet
+   
 Le projet consiste à concevoir et à développer un jeu Morpion en utilisant les principes de la programmation structurée.
 L'objectif est de mettre en pratique les connaissances acquises en algorithmique et en programmation, notamment les variables, les conditions, les boucles, les tableaux et les fonctions ou procédures.
 Le jeu permettra à deux joueurs de s'affronter sur une grille de 3 lignes et 3 colonnes.
 
 ## 2. Liste des membres du groupe
--TCHANGUEM TEMEBE BRUNELLE GRACE
--AMOMBO MBIDA CHRISTIANE
--AFAGA LEO SEBASTIANO
+
+-TCHANGUEM TEMEBE BRUNELLE GRACE gl2
+
+-AMOMBO MBIDA CHRISTIANE gl2
+
+-AFAGA LEO SEBASTIANO gl2
 
 
 ## 3. Description du jeu
+
 Le Morpion est un jeu de réflexion qui oppose deux joueurs sur une grille carrée composée de neuf cases.
 Le premier joueur utilise le symbole X, tandis que le deuxième utilise le symbole O.
 Les joueurs placent leurs symboles à tour de rôle dans les cases libres. Le but est d'aligner trois symboles identiques horizontalement, verticalement ou diagonalement.
 La partie se termine lorsqu'un joueur gagne ou lorsque toutes les cases sont occupées sans qu'aucun joueur ne gagne.
 
 ## 4. Règles du jeu
+
 Les règles du jeu sont les suivantes :
+
 1.	Le jeu commence avec une grille vide de 3 × 3. 
 2.	Deux joueurs participent à la partie. 
 3.	Le joueur 1 utilise le symbole X. 
@@ -36,7 +44,9 @@ Les règles du jeu sont les suivantes :
 10.	Une nouvelle partie peut être lancée après la fin de la précédente. 
 
 ## 6. Les étapes de réalisation du projet
+
 Pour mener le projet à bien, nous suivrons les étapes suivantes.
+
 N°	Étape	                        Travail à effectuer	                          Durée estimée
 1	Analyse du sujet	        Comprendre le fonctionnement du Morpion	                1 jour
 2	Rédaction des règles	        Définir les règles et les conditions de victoire	1 jour
@@ -51,4 +61,63 @@ N°	Étape	                        Travail à effectuer	                        
 11	Documentation	                 Rassembler les documents et expliquer le programme	2 jours
 12	Préparation de la présentation	Préparer la démonstration du jeu	                1 jour
 13	Livraison finale	        Vérifier et remettre le projet complet	                1 jour
+
+
+7. code source
+
+#include <stdio.h>
+
+char g[3][3];
+
+void init() {
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            g[i][j] = ' ';
+}
+
+void afficher() {
+    printf("\n");
+    for (int i = 0; i < 3; i++) {
+        printf(" %c | %c | %c \n", g[i][0], g[i][1], g[i][2]);
+        if (i < 2) printf("---+---+---\n");
+    }
+    printf("\n");
+}
+
+int gagne(char c) {
+    for (int i = 0; i < 3; i++) {
+        if (g[i][0]==c && g[i][1]==c && g[i][2]==c) return 1;
+        if (g[0][i]==c && g[1][i]==c && g[2][i]==c) return 1;
+    }
+    if (g[0][0]==c && g[1][1]==c && g[2][2]==c) return 1;
+    if (g[0][2]==c && g[1][1]==c && g[2][0]==c) return 1;
+    return 0;
+}
+
+int main() {
+    char joueur = 'X';
+    int l, c, tours = 0;
+    init();
+    while (tours < 9) {
+        afficher();
+        printf("Joueur %c (ligne colonne, 1-3) : ", joueur);
+        if (scanf("%d %d", &l, &c) != 2) break;
+        l--; c--;
+        if (l < 0 || l > 2 || c < 0 || c > 2 || g[l][c] != ' ') {
+            printf("Case invalide !\n");
+            continue;
+        }
+        g[l][c] = joueur;
+        tours++;
+        if (gagne(joueur)) {
+            afficher();
+            printf("Le joueur %c gagne !\n", joueur);
+            return 0;
+        }
+        joueur = (joueur == 'X') ? 'O' : 'X';
+    }
+    afficher();
+    printf("Match nul !\n");
+    return 0;
+}
 
